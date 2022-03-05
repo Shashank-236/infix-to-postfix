@@ -1,0 +1,97 @@
+
+/* C++ implementation to convert
+infix expression to postfix*/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+// Function to return precedence of operators
+int precedence(char c)
+{
+  if (c == '^')
+    return 3;
+  else if (c == '/' || c == '*')
+    return 2;
+  else if (c == '+' || c == '-')
+    return 1;
+  else
+    return -1;
+}
+void infixToPostfix(string infix)
+{
+   stack <char>st;
+   stack <char> opt;
+   int i=0;
+   for(int i=0;i<infix.length();i++)
+    {
+        if (st.top() == -1 || st.top() == ')')
+        {
+           st.push(infix[i]);
+          
+        }
+        else if (infix[i] == '(')
+        {
+            st.push(infix[i]);
+           
+        }
+        else if (precedence(infix[i]) > precedence(st.top()))
+        {
+            st.push(infix[i]);
+           
+        }
+         else if(infix[i] == ')') {
+            while(st.top() != '(')
+            {
+                opt.push(st.top());
+                st.pop();
+            }
+            st.pop();
+        }
+        else if (precedence(infix[i]) <= precedence(st.top()))
+        {
+          while(1)
+          {
+            if(precedence(infix[i]) <= precedence(st.top()))
+          { int k=st.top();
+           opt.push(k);
+           st.pop();
+          }
+          else
+          {
+            break;
+          }
+          }
+        }
+
+    }
+    while(!st.empty())
+    {
+      int l=st.top();
+      opt.push(l);
+      st.pop();
+    }
+    while(!opt.empty())
+    {
+      int o=opt.top();
+      cout<<o;
+      opt.pop();
+
+    }
+}
+int main()
+{
+  string exp = "a+b*(c^d-e)^(f+g*h)-i";
+  infixToPostfix(exp);
+  return 0;
+}
+
+After correction 
+   else {
+            while(!st.empty() && prec(s[i]) <= prec(st.top())) {
+                result += st.top();
+                st.pop(); 
+            }
+            st.push(c);
+        }
+    }
+ 
